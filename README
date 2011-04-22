@@ -1,0 +1,7 @@
+GNU Web is an enhancement to autoconf and automake. The project is a collection of M4 macros and Perl utilities to automatically produce Makefile for source packages of non-native runtimes.
+
+Supported runtimes:
+ * PHP
+ * Javascript / CSS
+ * Erlang
+
