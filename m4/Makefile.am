@@ -1,0 +1,19 @@
+#
+# GNU Web M4 Scripts
+#
+
+M4  = common/acx_init_gnuweb.m4
+M4 += common/acx_prefix.m4
+M4 += common/acx_check_prog.m4
+M4 += common/acx_define_dir.m4
+M4 += common/acx_silent_v.m4
+
+M4 += common/acx_section.m4
+M4 += common/acx_done.m4
+
+
+M4 += php/acx_php.m4
+M4 += php/amx_php.m4
+
+
+ac_DATA = $(M4)

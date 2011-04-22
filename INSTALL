@@ -1,0 +1,20 @@
+
+  ./configure --prefix=/usr
+  make
+  sudo make install
+
+
+  Note: GNUWeb depends on M4 macro:
+ax_add_am_macro.m4            ax_append_to_file.m4  ax_print_to_file.m4
+ax_add_recursive_am_macro.m4  ax_cvs.m4
+ax_am_macros.m4               ax_file_escapes.m4
+  
+  They are available from autoconf-archive project, 
+  download from ftp://ftp.sunet.se/pub/gnu/autoconf-archive/
+
+  We re-distribute dependent macros within autoconf-archive-deps.tgz  
+  Install them by
+
+  sudo tar -C / -zxvf autoconf-archive-deps.tgz
+
+

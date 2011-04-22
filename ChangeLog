@@ -1,0 +1,35 @@
+2011-04-22	Mobilana	<dev@mobi-lana.com>
+* version 0.2.7
+* github hosting
+* erlang support
+
+2011-03-26	Mobilana	<dev@mobi-lana.com>
+* version 0.2.6
+* FIX: UNIX, Mac OS compatibility
+
+2010-11-20	Mobilana	<dev@mobi-lana.com>
+* version 0.2.5
+* NEW: pkglibphpdir
+* FIX: m4/php/amx_php.m4: webprefix to PHPCONFED
+* FIX: m4/w3c/amx_w3c.m4: VPATH build 
+
+2010-10-22	Mobilana	<dev@mobi-lana.com>
+* m4/php/acx_php.m4: webprefix to install webapp at own cage
+
+2010-10-21	Mobilana	<dev@mobi-lana.com>
+* version 0.2.4
+* support CSS on VPATH
+* perl support
+* mysql support
+
+2010-06-21	Mobilana	<dev@mobi-lana.com>
+* m4/php/amx_php.m4: convert config.h into config.php 
+* m4/w3c/amx_js.m4: convert config.h into config.js
+
+2010-06-19	Mobilana	<dev@mobi-lana.com>
+* doc/gnuweb.txt: project documentation
+
+2010-04-13	Mobilana	<dev@mobi-lana.com>
+* amx_*.m4: conf2lib utility failes if  $(SRC) is not defined.
+
+
