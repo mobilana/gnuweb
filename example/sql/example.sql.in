@@ -1,0 +1,19 @@
+#include <config.h>
+
+#if HAVE_MYSQL == 1
+#define UID  uid int unsigned NOT NULL AUTO_INCREMENT
+#define PKEY PRIMARY KEY(uid)
+
+DROP TABLE IF EXISTS MyTable;
+#else
+#define UID  uid1 int, uid2 int   
+#define PKEY PRIMARY KEY(uid1, uid2)
+
+#endif 
+
+CREATE TABLE MyTable(
+   UID,
+   value varchar(50),
+
+   PKEY
+);

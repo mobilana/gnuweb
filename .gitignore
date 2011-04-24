@@ -19,3 +19,4 @@ config.h.in
 plat-*/
 *.yc.css
 *.yc.js
+*.sql

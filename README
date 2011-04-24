@@ -4,6 +4,7 @@ Makefile for source packages of non-native runtimes.
 
 Supported runtimes:
  * PHP
- * Javascript / CSS
+ * WebApp (javascript, css, html, etc)
+ * SQL
  * Erlang
 
