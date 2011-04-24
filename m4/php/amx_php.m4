@@ -1,6 +1,6 @@
 dnl @synopsis AMX_PHP
 dnl
-dnl Inject PHP processing rules to aminclude.am 
+dnl Inject PHP processing rules to Makefile.gnuweb
 dnl 
 dnl @depend AX_ADD_AM_MACRO
 dnl @category php
@@ -27,7 +27,7 @@ define rules_PHPLIB
 \$(1): \$\$(\$(subst -,_,\$(1:.php=))_SRC)
 	\$\$(\x41M_V_PHPLD)n=\`basename \x24\x24@ .php\`; \\
 	f=\`echo \$\$(\$(1:.php=)_SRC) | sed 's| | -I |g'\`; \\
-	\$(CONF2LIB) -r php -l \x24\x24\x24\x24n \$\$(PHP_LDFLAGS) -o \x24\x24@ -I \x24\x24\x24\x24f \$(top_builddir)/config.h
+	\$(CONF2LIB) -r php -l \x24\x24\x24\x24n \$\$(PHP_LFLAGS) -o \x24\x24@ -I \x24\x24\x24\x24f \$(top_builddir)/config.h
 endef
 
 \$(foreach libphp,                          \\
@@ -38,10 +38,10 @@ endef
 )
 
 config.php:
-	\$(AM_V_PHPLD)\$(CONF2LIB) -r php -l config \$(PHP_LDFLAGS) -o \x24@ \$(top_builddir)/config.h
+	\$(AM_V_PHPLD)\$(CONF2LIB) -r php -l config \$(PHP_LFLAGS) -o \x24@ \$(top_builddir)/config.h
 
 %%.php: force
-	\$(AM_V_PHP)\$(PHP) -l \$(PHP_CCFLAGS) \$(VPATH)/\x24@ > /dev/null
+	\$(AM_V_PHP)\$(PHP) -l \$(PHP_CFLAGS) \$(VPATH)/\x24@ > /dev/null
 
 force: ;
 

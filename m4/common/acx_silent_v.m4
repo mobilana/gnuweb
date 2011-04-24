@@ -13,7 +13,7 @@ AC_DEFUN([ACX_SILENT_V],[
    dnl TODO: fix an issue if silent rule is not enabled
    [AM_V_][]T[]='$(am__v_[]T[]_$(V))'
    am__v_[]T[]_='$(am__v_[]T[]_$(AM_DEFAULT_VERBOSITY))'
-   am__v_[]T[]_0='@echo "   []T[]   [\t]" $[@];'
+   am__v_[]T[]_0='@echo "   []T[]   [\t]" $[@]$$[@];'
    AC_SUBST([AM_V_][]T[])
    AC_SUBST(am__v_[]T[]_)
    AC_SUBST(am__v_[]T[]_0)
