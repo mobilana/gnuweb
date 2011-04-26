@@ -1,4 +1,4 @@
-dnl @synopsis ACX_CHECK_PROG(prog, [,progs list] [, action-if-found] [, action if-not-found] )
+dnl @synopsis ACX_CHECK_PROG(prog, [,progs list] [, action-if-found] [, action if-not-found])
 dnl
 dnl Defines Makefile variable with name prog in upper case 
 dnl Checks presence of program and its alternatives in PATH environment
@@ -16,6 +16,7 @@ dnl @license AllPermissive
 dnl
 AC_DEFUN([ACX_CHECK_PROG],[
    m4_pushdef([PROG], translit([$1], `0-9a-z-', `0-9A-Z_'))
+   
    AC_PATH_PROGS([]PROG[], $1 $2, [])
    if test "x$[]PROG[]" == "x" ; then
       ifelse([$4], , :, [$4])

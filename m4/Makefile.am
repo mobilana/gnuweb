@@ -22,4 +22,11 @@ M4 += php/acx_check_php_lib.m4
 M4 += webapp/acx_webapp.m4
 M4 += webapp/amx_webapp.m4
 
+M4 += sql/acx_sql.m4
+M4 += sql/amx_sql.m4
+
+M4 += erlang/acx_erlang.m4
+M4 += erlang/amx_erlang.m4
+M4 += erlang/acx_check_erlang_lib.m4
+
 ac_DATA = $(M4)

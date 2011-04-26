@@ -16,12 +16,13 @@ usage $0 [OPTIONS] <config.h>
 
 MANDATORY:
    -l    library name    
-   -r    destination runtime (php, js)
+   -r    destination runtime (php, js, eapp, erel)
 
 OPTIONAL:
    -D    define extra macros
    -E    exclude macro definition
    -I    include file
+   -U    uses library
    -o    output file
    -h    help
 EOF
@@ -34,6 +35,7 @@ $result = GetOptions(
    "D=s"  => \@defines,
    "E=s"  => \@excludes,
    "I=s"  => \@includes,
+   "U=s"  => \@uses,
    "o=s"  => \$output,
    "l=s"  => \$lib
 );
@@ -49,6 +51,12 @@ if ($runtime eq "php")
 } elsif ($runtime eq "js") {
    require runtime::js::Module;
    require runtime::js::Class;
+} elsif ($runtime eq "eapp") {
+   require runtime::eapp::Module;
+   require runtime::eapp::Class;
+} elsif ($runtime eq "erel") {
+   require runtime::erel::Module;
+   require runtime::erel::Class;
 } else {
    die("Runtime is not supported.");
 }
@@ -64,6 +72,10 @@ $mod = Module->new("$lib");
 foreach my $inc (@includes)
 {
    $mod->include($inc);
+}
+foreach my $dep (@uses)
+{
+	$mod->uses($dep);
 }
 
 $cls = Class->new("$lib");

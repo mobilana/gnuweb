@@ -13,12 +13,13 @@ sub new
    $self->{'name'}  = $name;
    $self->{'classes'} = ();
    $self->{'include'} = ();
+   $self->{'uses'}    = ();
 
    bless($self, $class);
    return ($self);
 }
 
-sub addClass()
+sub addClass
 {
    my ($self, $class) = @_;
    my $arr = $self->{'classes'};
@@ -26,12 +27,20 @@ sub addClass()
    $self->{'classes'} = $arr;
 }
 
-sub include()
+sub include
 {
    my ($self, $inc) = @_;
    my $arr = $self->{'include'};
    push(@$arr, $inc);
    $self->{'include'} = $arr;
+}
+
+sub uses
+{
+   my ($self, $dep) = @_;
+   my $arr = $self->{'uses'};
+   push(@$arr, $dep);
+   $self->{'uses'} = $arr;	
 }
 
 1;
