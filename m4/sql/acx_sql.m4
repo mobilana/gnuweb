@@ -11,7 +11,7 @@ dnl
 AC_DEFUN([ACX_SQL],[
    ACX_PREFIX
 
-   ACX_SECTION([SQL development runtime])
+   ACX_SECTION([SQL development])
    ACX_CHECK_PROG([gcc])      #pre-processor
    
    ACX_DEFINE_DIR([sqldir], $datadir, [sql])

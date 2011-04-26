@@ -2,7 +2,6 @@ dnl @synopsis AMX_PHP
 dnl
 dnl Inject PHP processing rules to Makefile.gnuweb
 dnl 
-dnl @depend AX_ADD_AM_MACRO
 dnl @category php
 dnl @author   Mobilana <dev@mobi-lana.com>
 dnl @version  0.9
