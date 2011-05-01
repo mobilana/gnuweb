@@ -20,6 +20,7 @@ AC_DEFUN([ACX_WEBAPP],[
    ACX_CHECK_PROG([conf2lib])
    
    ACX_FEATURE([webprefix], [/$PACKAGE])
+   ACX_FEATURE([docbase],   [],  [defines a base uri for documents])
    
    ACX_DEFINE_DIR([webrootdir], $prefix,     [var/www])
    ACX_DEFINE_DIR([webdocdir],  $webrootdir, [html$have_webprefix])
