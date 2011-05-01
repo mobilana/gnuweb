@@ -19,6 +19,7 @@ endif
 
 CONFED += \\
    -e 's|@webprefix[@]|\$(have_webprefix)|g' \\
+   -e 's|@docbase[@]|\$(have_docbase)|g' \\
    -e 's|@webrootdir[@]|\$(webrootdir)|g' \\
    -e 's|@docrootdir[@]|\$(docrootdir)|g' \\
    -e 's|@webdatadir[@]|\$(webdatadir)|g' \\

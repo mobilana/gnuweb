@@ -41,6 +41,5 @@ AC_DEFUN([ACX_ERLANG],[
    
    ACX_SILENT_V([ERL])
    
-   AMX_COMMON
    AMX_ERLANG 
 ])

@@ -23,6 +23,10 @@ AC_DEFUN([ACX_FEATURE],[
       default=$2
    fi
 
+   if test "$2" == "null" ; then
+      default=
+   fi
+
    dnl handle default enum
    ifelse([$3], ,
       [AC_ARG_ENABLE([$1], 

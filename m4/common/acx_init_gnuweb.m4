@@ -12,4 +12,6 @@ AC_DEFUN([ACX_INIT_GNUWEB],[
    MAKE_GNUWEB="include \$(top_builddir)/Makefile.gnuweb"
    AC_SUBST(MAKE_GNUWEB)
 
+   AMX_COMMON
+
 ])
