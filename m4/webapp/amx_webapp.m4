@@ -28,7 +28,7 @@ CONFED += \\
 
 define rules_JSLIB
 \$(1): \$\$(\$(subst -,_,\$(1:.js=))_SRC)
-	\$(\x41M_V_JS)cat \$\$(\$(subst -,_,\$(1:.js=))_SRC) > \x24\x24@; \\
+	\$(\x41M_V_JS)cat \$\$^ > \x24\x24@; \\
 	n=\`basename \x24\x24@ .js\`; \\
 	\$(CONF2LIB) -r js -l \x24\x24\x24\x24n \$\$(JS_LFLAGS) \$(top_builddir)/config.h >> \x24\x24@
 endef
