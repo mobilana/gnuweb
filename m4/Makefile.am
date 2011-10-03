@@ -18,9 +18,11 @@ M4 += common/acx_done.m4
 M4 += php/acx_php.m4
 M4 += php/amx_php.m4
 M4 += php/acx_check_php_lib.m4
+M4 += php/acx_htaccess.m4
 
 M4 += webapp/acx_webapp.m4
 M4 += webapp/amx_webapp.m4
+M4 += webapp/acx_check_webapp_lib.m4
 
 M4 += sql/acx_sql.m4
 M4 += sql/amx_sql.m4

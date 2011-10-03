@@ -32,13 +32,21 @@ AC_DEFUN([ACX_CHECK_ERLANG_LIB],[
          dnl check is this is an application or library
          AC_RUN_IFELSE(
             [AC_LANG_PROGRAM([], [
-               case application:start([$1]) of
-                  ok ->
-                     halt(0);
-                  {error,{already_started, _}} ->
-                     halt(0);
-                  _ ->
-                     halt(1)
+               Start = fun(A, S) ->
+                  case application:start(A) of
+                     ok -> true;
+                     {error, {already_started, _}} -> true;
+                     {error, {not_started, D}} -> 
+                        case S(D,S) of
+                           true  -> S(A,S);
+                           false -> false
+                        end;
+                     _ -> false
+                  end
+               end,
+               case Start([$1], Start) of
+                  true  -> halt(0);
+                  false -> halt(1)
                end]
             )],
             [

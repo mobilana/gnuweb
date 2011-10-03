@@ -42,6 +42,9 @@ config.php:
 %%.php: force
 	\$(AM_V_PHP)\$(PHP) -l \$(PHP_CFLAGS) \$(VPATH)/\x24@ > /dev/null
 
+.htaccess : htaccess.in
+	\$(\x41M_V_GEN)sed \$(CONFED) \$^ > \x24@
+
 force: ;
 
    " >> Makefile.gnuweb

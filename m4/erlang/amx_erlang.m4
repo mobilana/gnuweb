@@ -20,7 +20,7 @@ CONFED += \\
    -e 's|@pkgliberldir[@]|\$(pkgliberldir)|g'
 
 ebin/%%.beam : src/%%.erl
-	\$(AM_V_ERL)\$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \$<
+	\$(AM_V_ERL)test -d ebin || mkdir ebin; \$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \$<
 	
 priv/%%.beam : priv/%%.erl
 	\$(AM_V_ERL)\$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o priv \$<
@@ -37,7 +37,7 @@ endif
 
 define rules_BEAM
 \$(1)_BEAM=\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam)))
-nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
+nobase_pkgliberl_SCRIPTS += \$\$(\$(1)_BEAM)
 
 \$(1): \$\$(\$(1)_BEAM)
 endef	
@@ -45,7 +45,7 @@ endef
 
 define rules_ERLAPP
 \$(1)_BEAM=\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam)))
-nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
+nobase_pkgliberl_SCRIPTS += \$\$(\$(1)_BEAM)
 
 ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	\$(AM_V_ERL)m=\`echo \$\$(\$(1)_SRC) | sed 's| | -I |g'\`; \\

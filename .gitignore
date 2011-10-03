@@ -20,3 +20,7 @@ plat-*/
 *.yc.css
 *.yc.js
 *.sql
+*.aux
+*.log
+*.pdf
+*.gz

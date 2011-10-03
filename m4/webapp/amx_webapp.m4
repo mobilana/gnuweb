@@ -18,7 +18,8 @@ CONFED =
 endif
 
 CONFED += \\
-   -e 's|@webprefix[@]|\$(have_webprefix)|g' \\
+   -e 's|@endpoint[@]|\$(have_endpoint)|g' \\
+   -e 's|@webprefix[@]|\$(webprefix)|g' \\
    -e 's|@docbase[@]|\$(have_docbase)|g' \\
    -e 's|@webrootdir[@]|\$(webrootdir)|g' \\
    -e 's|@docrootdir[@]|\$(docrootdir)|g' \\
@@ -40,7 +41,7 @@ endef
 
 \$(foreach libcss,                          \\
    \$(filter-out %%.yc.css, \\
-      \$(filter %%.css,    \$(webcss_SCRIPTS) \$(pkglib_SCRIPTS) \$(pkgdata_DATA))\\
+      \$(filter %%.css,    \$(webstyle_SCRIPTS) \$(pkglib_SCRIPTS) \$(pkgdata_DATA))\\
    ), \\
    \$(eval                                  \\
       \$(call rules_CSSLIB,\$(libcss))      \\
@@ -71,6 +72,13 @@ config.js:
 
 %%.\$(VERSION).yc.css: %%.css
 	\$(AM_V_CSS)n=\`dirname \x24@\`;mkdir -p \x24\x24n;\$(YUICOMPRESSOR) --type css  \x24< > \x24@
+
+
+%%.jpg: %%.src.jpg
+	\$(\x41M_V_GEN)mkdir -p \`dirname \x24@\`;cp \x24^ \x24@
+
+%%.png: %%.src.png
+	\$(\x41M_V_GEN)mkdir -p \`dirname \x24@\`;cp \x24^ \x24@
 
 
    " >> Makefile.gnuweb

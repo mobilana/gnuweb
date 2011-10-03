@@ -18,14 +18,24 @@ AC_DEFUN([ACX_WEBAPP],[
    ACX_SECTION([Web development runtime])
    ACX_CHECK_PROG([yuicompressor])
    ACX_CHECK_PROG([conf2lib])
+
+   dnl
+   dnl http end-point where application is hosted   
+   ACX_FEATURE([endpoint], [http://localhost/$PACKAGE], [], [webapp end-point])
+   dnl 
+   re="http://[[^/]]*/\(.*\)"
+   webprefix=`echo "$have_endpoint" | sed -n -e "s|$re|\1|p"`   
+   AC_SUBST(webprefix)
+   AC_DEFINE_UNQUOTED(WEBPREFIX, ['/$webprefix'], [webprefix])
    
-   ACX_FEATURE([webprefix], [/$PACKAGE])
-   ACX_FEATURE([docbase],   [/$PACKAGE], [], 
+   dnl
+   dnl docbase facilitates development w/o httpd
+   ACX_FEATURE([docbase],   [.], [], 
                [defines a base uri for documents])
    
    ACX_DEFINE_DIR([webrootdir], $prefix,     [var/www])
-   ACX_DEFINE_DIR([webdocdir],  $webrootdir, [html$have_webprefix])
-   ACX_DEFINE_DIR([webcssdir],  $webdocdir, [css])
+   ACX_DEFINE_DIR([webdocdir],  $webrootdir, [html/$webprefix])
+   ACX_DEFINE_DIR([webstyledir],  $webdocdir, [style])
    ACX_DEFINE_DIR([webjsdir],   $webdocdir, [js])
    ACX_DEFINE_DIR([webdatadir], $webdocdir, [data])
    ACX_DEFINE_DIR([libjsdir],   $libdir, [js])

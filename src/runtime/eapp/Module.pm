@@ -31,7 +31,7 @@ sub toString
    my $uses = $self->{'uses'};
    foreach my $d (@$uses)
    {
-   	$d =~ s|(.*)-([0-9]+\.?){0,3}|$1|;
+   	$d =~ s|(.*)-([0-9]+\.?){0,4}|$1|;
    	push(@apps, $d);
    }
    #push(@apps, $name);
