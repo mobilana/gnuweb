@@ -1,4 +1,4 @@
-dnl @synopsis AMX_PHP
+dnl @synopsis AMX_ERLANG
 dnl
 dnl Inject Erlang processing rules to Makefile.gnuweb
 dnl 
@@ -25,11 +25,35 @@ ebin/%%.beam : src/%%.erl
 priv/%%.beam : priv/%%.erl
 	\$(AM_V_ERL)\$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o priv \$<
 
-priv/%%.conf : priv/%%.conf.in
+ebin/%%.config : src/%%.config.in
 	cat \x24^ | sed \$(CONFED) > \x24@
+
+ebin/%%.rel: ebin/%%.app
+	n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\)\\.app|\x5c1|p'\` ; \\
+	d=\`echo \$(ERLANG_LIBS) \$(ERLANG_APPS) | sed 's| | -U |g'\`; \\
+	\$(CONF2LIB) -r erel -l \x24\x24n -o \x24@  -U \x24\x24d \$(top_builddir)/config.h
+
+ebin/%%.boot: ebin/%%.rel
+	\$(AM_V_ERL)\$(ERLC) -pa ./ebin -pa ./*/ebin -o ebin \$^
+
+ebin/%%.tar.gz: ebin/%%.boot ebin/%%.script
+	n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).boot|\"ebin/\x5c1\"|p'\` ; \
+	\$(ERL) -noshell -pa ./ebin -eval \"systools:make_tar(\x24\x24n, [[{dirs, [src]}, {erts, code:root_dir()}]]),halt(0)\" ; 
+
+ebin/%%.tgz: ebin/%%.tar.gz .force
+	n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).tar.gz|\x5c1|p'\` ; \\
+	mkdir -p /tmp/rel/bin ; \\
+	tar -C /tmp/rel -xf \x24< ; \\
+	cp \$(top_builddir)/init.erlang /tmp/rel/bin/init ; \\
+	chmod ugo+x /tmp/rel/bin/init ; \\
+	cp ebin/\x24\x24n.config /tmp/rel/releases/\$(VERSION)/sys.config ; \\
+	tar -C /tmp/rel -czpf \x24@ \`ls /tmp/rel\` ; \\
+	rm -R /tmp/rel
 
 run:
 	\$(ERL) -pa ./ebin -pa ./*/ebin -pa ./priv -pa ./*/priv
+
+.force:
 
 ifndef nobase_pkgliberl_SCRIPTS	
 nobase_pkgliberl_SCRIPTS =
@@ -52,13 +76,6 @@ ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	d=\`echo \$\$(ERLANG_APPS) | sed 's| | -U |g'\`; \\
 	\$\$(CONF2LIB)	-r eapp -l \$(1) -o \x24\x24@ -I \x24\x24\x24\x24m -U \x24\x24\x24\x24d \$(top_builddir)/config.h
 
-ebin/\$(1).rel: ebin/\$(1).app
-	\$(AM_V_ERL)d=\`echo \$\$(ERLANG_LIBS) \$\$(ERLANG_APPS) | sed 's| | -U |g'\`; \\
-	\$(CONF2LIB)	-r erel -l \$(1) -o \x24\x24@  -U \x24\x24\x24\x24d \$(top_builddir)/config.h
-
-ebin/\$(1).boot: ebin/\$(1).rel
-	\$(AM_V_ERL)\$(ERLC) -pa ./ebin -pa ./*/ebin -o ebin \$\$^
-	
 endef
 
 dnl Erlang app should deliver bin/.app file to nobase_pkgliberl_SCRIPTS

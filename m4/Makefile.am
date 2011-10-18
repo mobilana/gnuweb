@@ -30,5 +30,6 @@ M4 += sql/amx_sql.m4
 M4 += erlang/acx_erlang.m4
 M4 += erlang/amx_erlang.m4
 M4 += erlang/acx_check_erlang_lib.m4
+M4 += erlang/acx_init_script.m4
 
 ac_DATA = $(M4)

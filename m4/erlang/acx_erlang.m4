@@ -40,6 +40,7 @@ AC_DEFUN([ACX_ERLANG],[
    ACX_CHECK_ERLANG_LIB([stdlib])
    
    ACX_SILENT_V([ERL])
-   
-   AMX_ERLANG 
+
+   AMX_ERLANG
+   ACX_INIT_SCRIPT 
 ])
