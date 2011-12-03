@@ -23,8 +23,7 @@ sub toString
    foreach my $i (@$include)
    {
    	$i =~ s,^(.*/)?(.+)$,$2,; # basename
-   	$i =~ s,\.erl,,;          # no .erl extension
-   	push(@mods, $i);
+   	push(@mods, $1) if ($i =~ /(.*)\.erl/);   # only erl files and no .erl extension
    }
    # list of dependencies
    my @apps = ();

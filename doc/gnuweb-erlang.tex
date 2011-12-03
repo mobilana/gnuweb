@@ -1,0 +1,78 @@
+\section{Erlang Runtime}
+
+\subsection{Project structure}
+
+Erlang project contains one or more Erlang/OTP ``applications'' that composes one or more Erlang/OTP ``releases''. Those releases are standalone, self contained packages that are ready for distribution to ``target system''.\\
+
+The typical project layout is:\\
+
+\dirtree{%
+.1 project. 
+.2 app1.
+.3 ebin.
+.4 *.beam.
+.4 app1.app.
+.3 src.
+.4 *.erl.
+.3 tests.
+.4 ....
+.3 manifest.
+.2 app2.
+.3 ....
+.2 rel1.
+.3 ebin.
+.4 *.beam.
+.4 rel1.beam.
+.4 sys.config.
+.4 rel1.app.
+.4 rel1.tar.gz.
+.3 src.
+.4 *.erl.
+.4 sys.config.in.
+.3 tests.
+.4 ....
+.3 manifest.
+.2 init.
+}
+
+
+\begin{itemize}
+\item *.erl is Erlang source code
+\item *.beam is compiled Erlang code, gnuweb declares Makefile rules for Erlang source code compilation.
+\item *.app is Erlang application resource file, gnuweb generates them from application manifest.
+\end{itemize}
+
+
+
+\subsection{Usage scenarios}
+Config
+
+\subsection{Macro}
+
+
+\subsection{Building libraries and applications}
+
+\subsubsection{Naming convention}
+
+\subsubsection{Defining sources}
+
+PHP library or application can be installed in libphpdir.
+
+For example:
+\begin{verbatim}
+   libphp_SCRIPTS = libhello
+\end{verbatim}
+
+The variable libhello\_SRC is used to specify which PHP source files belongs to this library.
+
+%If libhello_SRC is not specified, then it defaults to all php files in libhello/ directory (libhello/*.php).
+
+
+\subsection{Simple Example}
+
+\begin{thebibliography}{}
+\bibitem{Erl-Rel}
+http://www.erlang.org/doc/design\_principles/release\_structure.html
+\end{thebibliography}
+
+

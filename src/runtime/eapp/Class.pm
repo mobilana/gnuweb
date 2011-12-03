@@ -9,7 +9,7 @@ use runtime::SClass;
 our @ISA = qw(SClass);
 
 #
-# Converts class to valid php syntax
+# Converts class to valid erlang syntax
 #
 sub toString
 {

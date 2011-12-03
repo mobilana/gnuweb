@@ -30,7 +30,7 @@ AC_DEFUN([ACX_ERLANG],[
    if [[ "$?" -ne 0 ]] ; then
       AC_ERROR("Unable to resolve path.")
    fi
-   AC_MSG_RESULT([$erllibroot])
+   AC_MSG_RESULT([$liberlroot])
 
    ACX_DEFINE_DIR([liberldir],    $liberlroot, [])
    ACX_DEFINE_DIR([pkgliberldir], $liberlroot, [$PACKAGE]-[$VERSION])

@@ -26,27 +26,34 @@ priv/%%.beam : priv/%%.erl
 	\$(AM_V_ERL)\$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o priv \$<
 
 ebin/%%.config : src/%%.config.in
-	cat \x24^ | sed \$(CONFED) > \x24@
+	\$(AM_V_ERL)cat \x24^ | sed \$(CONFED) > \x24@
 
 ebin/%%.rel: ebin/%%.app
-	n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\)\\.app|\x5c1|p'\` ; \\
-	d=\`echo \$(ERLANG_LIBS) \$(ERLANG_APPS) | sed 's| | -U |g'\`; \\
+	\$(AM_V_ERL)n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\)\\.app|\x5c1|p'\` ; \\
+	e=\"\$(ERLANG_LIBS) \$(ERLANG_APPS)\" ; \\
+	for l in \`cat \x24\x24n.mf | sed -n 's|deps: \\(.*\\)|\x5c1|p'\` ; do \\
+	erl -pa ../*/ebin -pa ./*/ebin -eval \"{ok,[[{_,_,L}]]}=file:consult(code:lib_dir(\x5c\"\x24\x24l\x5c\") ++ \x5c\"/ebin/\x24\x24l.app\x5c\"), file:write_file(\x5c\"vsn.out\x5c\", list_to_binary(proplists:get_value(vsn, L, \x5c\"\x5c\"))), timer:apply_after(100, erlang, halt, [[0]]).\" > /dev/null ; \\
+	v=\`cat vsn.out\`; \\
+	e=\"\x24\x24e \x24\x24l-\x24\x24v\"; \\ 
+	rm vsn.out ; \\
+	done ; \\
+	d=\`echo \"\x24\x24e\" | sed 's| | -U |g'\`; \\
 	\$(CONF2LIB) -r erel -l \x24\x24n -o \x24@  -U \x24\x24d \$(top_builddir)/config.h
 
 ebin/%%.boot: ebin/%%.rel
 	\$(AM_V_ERL)\$(ERLC) -pa ./ebin -pa ./*/ebin -o ebin \$^
 
-ebin/%%.tar.gz: ebin/%%.boot ebin/%%.script
-	n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).boot|\"ebin/\x5c1\"|p'\` ; \
-	\$(ERL) -noshell -pa ./ebin -eval \"systools:make_tar(\x24\x24n, [[{dirs, [src]}, {erts, code:root_dir()}]]),halt(0)\" ; 
+ebin/%%.tar.gz: ebin/%%.boot 
+	\$(AM_V_ERL)n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).boot|\"ebin/\x5c1\"|p'\` ; \
+	\$(ERL) -noshell -pa ./ebin -eval \"systools:make_tar(\x24\x24n, [[{dirs, [src]}, {erts, code:root_dir()}]]),halt(0)\" > /dev/null ; 
 
-ebin/%%.tgz: ebin/%%.tar.gz .force
-	n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).tar.gz|\x5c1|p'\` ; \\
+%%.\$(VERSION).tgz: ebin/%%.tar.gz .force
+	\$(AM_V_ERL)n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).tar.gz|\x5c1|p'\` ; \\
 	mkdir -p /tmp/rel/bin ; \\
 	tar -C /tmp/rel -xf \x24< ; \\
 	cp \$(top_builddir)/init.erlang /tmp/rel/bin/init ; \\
 	chmod ugo+x /tmp/rel/bin/init ; \\
-	cp ebin/\x24\x24n.config /tmp/rel/releases/\$(VERSION)/sys.config ; \\
+	cp ebin/sys.config /tmp/rel/releases/\$(VERSION)/sys.config ; \\
 	tar -C /tmp/rel -czpf \x24@ \`ls /tmp/rel\` ; \\
 	rm -R /tmp/rel
 
@@ -60,20 +67,21 @@ nobase_pkgliberl_SCRIPTS =
 endif
 
 define rules_BEAM
-\$(1)_BEAM=\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam)))
-nobase_pkgliberl_SCRIPTS += \$\$(\$(1)_BEAM)
+\$(1)_BEAM=\$(subst .in,,\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam))))
+nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
 
 \$(1): \$\$(\$(1)_BEAM)
 endef	
    
 
 define rules_ERLAPP
-\$(1)_BEAM=\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam)))
-nobase_pkgliberl_SCRIPTS += \$\$(\$(1)_BEAM)
+\$(1)_BEAM=\$(subst .in,,\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam))))
+nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
 
 ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	\$(AM_V_ERL)m=\`echo \$\$(\$(1)_SRC) | sed 's| | -I |g'\`; \\
-	d=\`echo \$\$(ERLANG_APPS) | sed 's| | -U |g'\`; \\
+	e=\`cat \$(1).mf | sed -n 's|deps: \\(.*\\)|\x5c1|p'\` ; \\
+	d=\`echo \"\$\$(ERLANG_APPS) \x24\x24\x24\x24e\" | sed 's| | -U |g'\`; \\
 	\$\$(CONF2LIB)	-r eapp -l \$(1) -o \x24\x24@ -I \x24\x24\x24\x24m -U \x24\x24\x24\x24d \$(top_builddir)/config.h
 
 endef

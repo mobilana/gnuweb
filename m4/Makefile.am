@@ -32,4 +32,5 @@ M4 += erlang/amx_erlang.m4
 M4 += erlang/acx_check_erlang_lib.m4
 M4 += erlang/acx_init_script.m4
 
-ac_DATA = $(M4)
+dist_ac_DATA = $(M4)
+
