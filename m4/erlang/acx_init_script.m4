@@ -3,7 +3,7 @@ dnl
 dnl Generates a INIT SCRIPT file
 dnl 
 dnl 
-dnl @category php
+dnl @category erlang
 dnl @author   Mobilana <dev@mobi-lana.com>
 dnl @version  0.9
 dnl @license  AllPermissive
