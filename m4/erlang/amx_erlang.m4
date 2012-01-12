@@ -19,6 +19,15 @@ CONFED += \\
    -e 's|@liberldir[@]|\$(liberldir)|g' \\
    -e 's|@pkgliberldir[@]|\$(pkgliberldir)|g'
 
+ifndef CCFLAGS
+   ERL_CFLAGS =
+endif
+
+ifeq (\$(BUILD),debug)
+   ERL_CFLAGS += +debug_info -DDEBUG
+endif
+   
+   
 ebin/%%.beam : src/%%.erl
 	\$(AM_V_ERL)test -d ebin || mkdir ebin; \$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \$<
 	
@@ -57,8 +66,11 @@ ebin/%%.tar.gz: ebin/%%.boot
 	tar -C /tmp/rel -czpf \x24@ \`ls /tmp/rel\` ; \\
 	rm -R /tmp/rel
 
+debug:
+	\$(MAKE) BUILD=debug	
+	
 run:
-	\$(ERL) -pa ./ebin -pa ./*/ebin -pa ./priv -pa ./*/priv
+	\$(ERL) -pa ./ebin -pa ../*/ebin -pa ./priv -pa ../*/priv
 
 .force:
 
