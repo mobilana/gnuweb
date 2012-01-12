@@ -93,7 +93,7 @@ nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
 ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	\$(AM_V_ERL)m=\`echo \$\$(\$(1)_SRC) | sed 's| | -I |g'\`; \\
 	e=\"\$\$(ERLANG_APPS)\"; \\
-	for l in \`cat \$(1).mf | sed -n 's|deps: \\(.*\\)|\x5c1|p'\` ; do \\
+	for l in \`test -f \$(1).mf && cat \$(1).mf | sed -n 's|deps: \\(.*\\)|\x5c1|p'\` ; do \\
 	e=\"\x24\x24\x24\x24e \x24\x24\x24\x24l\"; \\
 	done ; \\
 	d=\`echo \"\x24\x24\x24\x24e\" | sed 's| | -U |g'\`; \\
