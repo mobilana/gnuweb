@@ -93,11 +93,12 @@ nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
 ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	\$(AM_V_ERL)m=\`echo \$\$(\$(1)_SRC) | sed 's| | -I |g'\`; \\
 	e=\"\$\$(ERLANG_APPS)\"; \\
-	for l in \`test -f \$(1).mf && cat \$(1).mf | sed -n 's|deps: \\(.*\\)|\x5c1|p'\` ; do \\
+	v=\`test -f \$(1).mf && cat \$(1).mf | sed -n 's|version: \\(.*\\)|-v \x5c1|p'\` ; \\
+	for l in \`test -f \$(1).mf && cat \$(1).mf | sed -n 's|depends: \\(.*\\)|\x5c1|p'\` ; do \\
 	e=\"\x24\x24\x24\x24e \x24\x24\x24\x24l\"; \\
 	done ; \\
 	d=\`echo \"\x24\x24\x24\x24e\" | sed 's| | -U |g'\`; \\
-	\$\$(CONF2LIB)	-r eapp -l \$(1) -o \x24\x24@ -I \x24\x24\x24\x24m -U \x24\x24\x24\x24d \$(top_builddir)/config.h
+	\$\$(CONF2LIB)	-r eapp -l \$(1) \x24\x24\x24\x24v -o \x24\x24@ -I \x24\x24\x24\x24m -U \x24\x24\x24\x24d \$(top_builddir)/config.h
 
 endef
 

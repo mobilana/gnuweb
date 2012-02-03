@@ -16,6 +16,7 @@ usage $0 [OPTIONS] <config.h>
 
 MANDATORY:
    -l    library name    
+   -v    library version overwrite config.h
    -r    destination runtime (php, js, eapp, erel)
 
 OPTIONAL:
@@ -37,7 +38,8 @@ $result = GetOptions(
    "I=s"  => \@includes,
    "U=s"  => \@uses,
    "o=s"  => \$output,
-   "l=s"  => \$lib
+   "l=s"  => \$lib,
+   "v=s"  => \$version
 );
 usage() if ($help || !defined $lib || !defined $runtime || !defined @ARGV[0]);  
 
@@ -101,6 +103,8 @@ foreach my $def (@defines)
    my($var, $val) = split('/=/', $def);
    $cls->static($var, $val);
 }
+# overwrite default version if this is desired
+$cls->static('VERSION', $version) if defined($version);
 
 $mod->addClass($cls);
 
