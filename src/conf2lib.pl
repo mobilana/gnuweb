@@ -104,7 +104,7 @@ foreach my $def (@defines)
    $cls->static($var, $val);
 }
 # overwrite default version if this is desired
-$cls->static('VERSION', $version) if defined($version);
+$cls->static('VERSION', "\"$version\"") if defined($version);
 
 $mod->addClass($cls);
 

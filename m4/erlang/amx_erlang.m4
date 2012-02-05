@@ -19,8 +19,12 @@ CONFED += \\
    -e 's|@liberldir[@]|\$(liberldir)|g' \\
    -e 's|@pkgliberldir[@]|\$(pkgliberldir)|g'
 
-ifndef CCFLAGS
+ifndef ERL_CFLAGS
    ERL_CFLAGS =
+endif
+
+ifeq (\$(BUILD),native)
+   ERL_CFLAGS += +native
 endif
 
 ifeq (\$(BUILD),debug)
