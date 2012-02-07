@@ -269,14 +269,14 @@ $env
    sub toString
    {
       my ($self) = @_;
-      $result = "var $self->{'name'} = {\n";
+      $result = "(function(ns){ ns.config = {\n";
       my $attrs  = $self->{'static'};
       while( my($name, $value) = each(%$attrs) )
       {
          $result .= "\t$name : $value,\n";
       }
       $result =~ s/,\n$//;
-      $result .= "\n}\n";
+      $result .= "\n}\n}(typeof window.$self->{'name'} == 'object' ? window.$self->{'name'} : window.$self->{'name'} = {}));\n";
       return $result;
    }
 }

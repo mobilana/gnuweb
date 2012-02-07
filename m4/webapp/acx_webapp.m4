@@ -17,7 +17,15 @@ AC_DEFUN([ACX_WEBAPP],[
 
    ACX_SECTION([Web development runtime])
    ACX_CHECK_PROG([yuicompressor])
-   ACX_CHECK_PROG([conf2lib])
+   if test -f conf2lib ; then
+      CONF2LIB="\$(top_builddir)/conf2lib"
+   else
+      ACX_CHECK_PROG([conf2lib])
+      cp $CONF2LIB conf2lib
+      chmod 777 conf2lib
+      CONF2LIB="\$(top_builddir)/conf2lib"
+   fi
+   AC_SUBST(CONF2LIB)
 
    dnl
    dnl http end-point where application is hosted   

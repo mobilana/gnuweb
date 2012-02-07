@@ -6,7 +6,7 @@
 #
 # @license AllPermissive
 #
-AC_INIT([gnuweb], [0.2.7], [dev@mobi-lana.com])
+AC_INIT([gnuweb], [0.2.8], [dev@mobilana.mobi])
 AM_INIT_AUTOMAKE
 
 AC_PROG_INSTALL
