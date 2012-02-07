@@ -12,7 +12,7 @@
 #
 ###############################################################################
 {
-   package runtime::SModule;
+   package SModule;
 
    sub new
    {
@@ -53,7 +53,7 @@
 }
 
 {
-   package runtime::SClass;
+   package SClass;
    
    sub new
    {
@@ -83,7 +83,6 @@
 ###############################################################################
 {
    package EappModule;
-   use runtime::SModule;
    our @ISA = qw(SModule);
    
    sub toString
@@ -143,7 +142,6 @@ $env
 
 {
    package EappClass;
-   use runtime::SClass;
    our @ISA = qw(SClass);
    
    #

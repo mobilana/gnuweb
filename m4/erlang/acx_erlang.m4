@@ -13,10 +13,14 @@ AC_DEFUN([ACX_ERLANG],[
    ACX_SECTION([Erlang development runtime])
    AC_ARG_WITH(erlang, [  --with-erlang=PREFIX path to erlang runtime])
  
-   ACX_CHECK_PROG([conf2lib])
-   cp $CONF2LIB conf2lib
-   chmod 777 conf2lib
-   CONF2LIB="\$(top_builddir)/conf2lib"
+   if test -f conf2lib ; then
+      CONF2LIB="\$(top_builddir)/conf2lib"
+   else
+      ACX_CHECK_PROG([conf2lib])
+      cp $CONF2LIB conf2lib
+      chmod 777 conf2lib
+      CONF2LIB="\$(top_builddir)/conf2lib"
+   fi
    AC_SUBST(CONF2LIB)
    
    erlang_path=$with_erlang:$with_erlang/bin:$PATH
