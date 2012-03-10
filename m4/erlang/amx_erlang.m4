@@ -31,6 +31,7 @@ ifeq (\$(BUILD),debug)
    ERL_CFLAGS += +debug_info -DDEBUG
 endif
    
+ERL_PATH = -pa ../*/ebin -pa ./*/ebin
    
 ebin/%%.beam : src/%%.erl
 	\$(AM_V_ERL)test -d ebin || mkdir ebin; \$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \$<
@@ -43,24 +44,24 @@ ebin/%%.config : src/%%.config.in
 
 ebin/%%.rel: ebin/%%.app
 	\$(AM_V_ERL)n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\)\\.app|\x5c1|p'\` ; \\
-	e=\"\$(ERLANG_LIBS) \$(ERLANG_APPS)\" ; \\
-	for l in \`cat \x24\x24n.mf | sed -n 's|deps: \\(.*\\)|\x5c1|p'\` ; do \\
-	erl -pa ../*/ebin -pa ./*/ebin -eval \"{ok,[[{_,_,L}]]}=file:consult(code:lib_dir(\x5c\"\x24\x24l\x5c\") ++ \x5c\"/ebin/\x24\x24l.app\x5c\"), file:write_file(\x5c\"vsn.out\x5c\", list_to_binary(proplists:get_value(vsn, L, \x5c\"\x5c\"))), timer:apply_after(100, erlang, halt, [[0]]).\" > /dev/null ; \\
+	\$(ERL) \$(ERL_PATH) -eval \"{ok,[[{_,_,L}]]}=file:consult(\x5c\"\x24^\x5c\"), file:write_file(\x5c\"app.out\x5c\", [[ atom_to_list(X) ++ \x5c\" \x5c\" || X <- proplists:get_value(applications, L) ]]), timer:apply_after(100, erlang, halt, [[0]]).\" > /dev/null ; \\
+	for l in \`cat app.out\` ; do \\
+	\$(ERL) \$(ERL_PATH) -eval \"{ok,[[{_,_,L}]]}=file:consult(code:lib_dir(\x5c\"\x24\x24l\x5c\") ++ \x5c\"/ebin/\x24\x24l.app\x5c\"), file:write_file(\x5c\"vsn.out\x5c\", list_to_binary(proplists:get_value(vsn, L, \x5c\"\x5c\"))), timer:apply_after(100, erlang, halt, [[0]]).\" > /dev/null ; \\
 	v=\`cat vsn.out\`; \\
 	e=\"\x24\x24e \x24\x24l-\x24\x24v\"; \\ 
 	rm vsn.out ; \\
-	done ; \\
-	d=\`echo \"\x24\x24e\" | sed 's| | -U |g'\`; \\
-	\$(CONF2LIB) -r erel -l \x24\x24n -o \x24@  -U \x24\x24d \$(top_builddir)/config.h
+	done ; rm app.out ; \\
+	d=\`echo \"\$(ERLANG_LIBS) \x24\x24e\" | sed 's| \\([[a-zA-Z]]\\)| -U \x5c1|g'\`; \\
+	\$(CONF2LIB) -r erel -l \x24\x24n -o \x24@ -U \x24\x24d \$(top_builddir)/config.h
 
 ebin/%%.boot: ebin/%%.rel
 	\$(AM_V_ERL)\$(ERLC) -pa ./ebin -pa ./*/ebin -o ebin \$^
 
-ebin/%%.tar.gz: ebin/%%.boot 
+ebin/%%.tar.gz: ebin/%%.boot
 	\$(AM_V_ERL)n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).boot|\"ebin/\x5c1\"|p'\` ; \
 	\$(ERL) -noshell -pa ./ebin -eval \"systools:make_tar(\x24\x24n, [[{dirs, [src]}, {erts, code:root_dir()}]]),halt(0)\" > /dev/null ; 
 
-%%.\$(VERSION).tgz: ebin/%%.tar.gz .force
+%%.\$(VERSION).tgz: ebin/%%.tar.gz ebin/sys.config .force
 	\$(AM_V_ERL)n=\`echo \$< | sed -n -e 's|ebin/\\(.*\\).tar.gz|\x5c1|p'\` ; \\
 	mkdir -p /tmp/rel/bin ; \\
 	tar -C /tmp/rel -xf \x24< ; \\
@@ -96,13 +97,10 @@ nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
 
 ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	\$(AM_V_ERL)m=\`echo \$\$(\$(1)_SRC) | sed 's| | -I |g'\`; \\
-	e=\"\$\$(ERLANG_APPS)\"; \\
-	v=\`test -f \$(1).mf && cat \$(1).mf | sed -n 's|version: \\(.*\\)|-v \x5c1|p'\` ; \\
-	for l in \`test -f \$(1).mf && cat \$(1).mf | sed -n 's|depends: \\(.*\\)|\x5c1|p'\` ; do \\
-	e=\"\x24\x24\x24\x24e \x24\x24\x24\x24l\"; \\
-	done ; \\
-	d=\`echo \"\x24\x24\x24\x24e\" | sed 's| | -U |g'\`; \\
-	\$\$(CONF2LIB)	-r eapp -l \$(1) \x24\x24\x24\x24v -o \x24\x24@ -I \x24\x24\x24\x24m -U \x24\x24\x24\x24d \$(top_builddir)/config.h
+	e=\"\$\$(ERLANG_APPS) \$(\$(1)_EXT)\"; \\
+	v=\`test \$(\$(1)_VSN) && echo \"-v \$(\$(1)_VSN)\"\`; \\
+	d=\`echo \"\x24\x24\x24\x24e\" | sed 's| \\([[a-zA-Z]]\\)| -U \x5c1|g'\`; \\
+	\$\$(CONF2LIB)	-r eapp -l \$(1) -o \x24\x24@ -I \x24\x24\x24\x24m \x24\x24\x24\x24v -U \x24\x24\x24\x24d \$(top_builddir)/config.h
 
 endef
 

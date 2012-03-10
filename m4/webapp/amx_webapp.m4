@@ -41,7 +41,7 @@ endef
 
 \$(foreach libcss,                          \\
    \$(filter-out %%.yc.css, \\
-      \$(filter %%.css,    \$(webstyle_SCRIPTS) \$(pkglib_SCRIPTS) \$(pkgdata_DATA))\\
+      \$(filter %%.css,    \$(webstyle_SCRIPTS) \$(pkglib_SCRIPTS) \$(pkgdata_SCRIPTS) \$(pkgdata_DATA))\\
    ), \\
    \$(eval                                  \\
       \$(call rules_CSSLIB,\$(libcss))      \\
@@ -50,7 +50,7 @@ endef
 
 \$(foreach libjs,                            \\
    \$(filter-out %%.yc.js, \\
-      \$(filter %%.js,    \$(webjs_SCRIPTS) \$(libjs_SCRIPTS) \$(pkglib_SCRIPTS) \$(pkgdata_DATA))\\
+      \$(filter %%.js,    \$(webjs_SCRIPTS) \$(libjs_SCRIPTS) \$(pkglib_SCRIPTS) \$(pkgdata_SCRIPTS) \$(pkgdata_DATA))\\
    ), \\
    \$(eval                                  \\
       \$(call rules_JSLIB,\$(libjs))      \\
