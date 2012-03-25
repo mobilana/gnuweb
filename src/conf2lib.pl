@@ -112,13 +112,17 @@
       }
       #push(@apps, $name);
       
-      
       # classes (converted into env)
       my $classes = $self->{'classes'};
       $env  = '';
       foreach my $c (@$classes)
       {
          $env .= $c->toString();
+      }
+      
+      my $boot = "";
+      if (grep {$_ eq "${name}_app"} @mods) {
+         $boot = "{mod, {${name}_app, \[\]}},";
       }
       
       $result  = "
@@ -129,7 +133,7 @@
       {modules,     \[" . join(",", @mods). "\]},
       {registered,  \[\]},
       {applications,\[" . join(",", @apps). "\]},
-      {mod, {${name}_app, \[\]}},
+      $boot
       {env, [
 $env
       ]}
