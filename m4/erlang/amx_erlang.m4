@@ -23,6 +23,10 @@ ifndef ERL_CFLAGS
    ERL_CFLAGS =
 endif
 
+ifndef ERL_FLAGS
+   ERL_FLAGS =
+endif
+
 ifeq (\$(BUILD),native)
    ERL_CFLAGS += +native
 endif
@@ -32,12 +36,21 @@ ifeq (\$(BUILD),debug)
 endif
    
 ERL_PATH = -pa ../*/ebin -pa ./*/ebin
+
+%%: %%.escript
+	\$(AM_V_ERL)\$(ESCRIPT) -s \$< && \
+	cp \$< \x24@ && \
+	chmod a+x \x24@
    
 ebin/%%.beam : src/%%.erl
 	\$(AM_V_ERL)test -d ebin || mkdir ebin; \$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \$<
 	
 priv/%%.beam : priv/%%.erl
 	\$(AM_V_ERL)\$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o priv \$<
+
+%%.beam : %%.erl
+	\$(AM_V_ERL)\$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam \$<
+
 
 ebin/%%.config : src/%%.config.in
 	\$(AM_V_ERL)cat \x24^ | sed \$(CONFED) > \x24@
@@ -75,7 +88,7 @@ debug:
 	\$(MAKE) BUILD=debug	
 	
 run:
-	\$(ERL) -pa ./ebin -pa ../*/ebin -pa ./priv -pa ../*/priv
+	\$(ERL) -pa ./ebin  -pa ./*/ebin -pa ../*/ebin -pa ./priv -pa ../*/priv \$(ERL_FLAGS)
 
 .force:
 
@@ -85,7 +98,10 @@ endif
 
 define rules_BEAM
 \$(1)_BEAM=\$(subst .in,,\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam))))
-nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
+nobase_pkgliberl_SCRIPTS += \$\$(\$(1)_BEAM)
+
+ebin/%%.beam : \$(1)/%%.erl
+	\$(AM_V_ERL)test -d ebin || mkdir ebin; \$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \x24\x24<
 
 \$(1): \$\$(\$(1)_BEAM)
 endef	
@@ -93,7 +109,10 @@ endef
 
 define rules_ERLAPP
 \$(1)_BEAM=\$(subst .in,,\$(addprefix ebin/, \$(notdir \$(\$(1)_SRC:.erl=.beam))))
-nobase_pkgliberl_SCRIPTS += \$(\$(1)_BEAM)
+nobase_pkgliberl_SCRIPTS += \$\$(\$(1)_BEAM)
+
+ebin/%%.beam : \$(1)/%%.erl
+	\$(AM_V_ERL)test -d ebin || mkdir ebin; \$(ERLC) \$(ERL_CFLAGS) -I ./include -b beam -o ebin \x24\x24<
 
 ebin/\$(1).app: \$\$(\$(1)_BEAM)
 	\$(AM_V_ERL)m=\`echo \$\$(\$(1)_SRC) | sed 's| | -I |g'\`; \\
